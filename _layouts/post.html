@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<article class="entry">
+  <header class="post-header">
+    <h1>{{ page.title }}</h1>
+    <p class="post-meta">{{ page.date | date: "%B %-d, %Y" }} · {{ page.pillar | upcase }}{% if page.topics and page.topics.size > 0 %} · {{ page.topics | join: ", " }}{% endif %}</p>
+  </header>
+  <div class="entrywrap">
+    {{ content }}
+  </div>
+</article>
+
+<section class="related">
+  <h2>Related posts</h2>
+  <ul>
+    {% assign related = site.posts | where: "pillar", page.pillar | where_exp: "post", "post.url != page.url" | slice: 0, 5 %}
+    {% if related == empty or related.size == 0 %}
+      {% assign topics = page.topics | default: [] %}
+      {% assign related = site.posts | where_exp: "post", "post.url != page.url" | where_exp: "post", "post.topics | join: ',' | contains: topics.first" | slice: 0, 5 %}
+    {% endif %}
+    {% for post in related %}
+      <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> — {{ post.pillar | capitalize }}</li>
+    {% endfor %}
+  </ul>
+</section>
