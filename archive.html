@@ -5,7 +5,7 @@ title: Archive
 <section class="archive">
   <h2>Archive</h2>
   <form class="archive-search" action="{{ '/archive.html' | relative_url }}" method="get">
-    <input type="search" name="search" placeholder="Search by title or excerpt">
+    <input type="search" name="search" placeholder="Search by title or excerpt" value="{{ page.search | default: site.params.search }}">
     <button type="submit">Search</button>
   </form>
 
@@ -45,11 +45,6 @@ title: Archive
   const targetTopic = params.get('topic') || params.get('tag');
   const searchQuery = (params.get('search') || '').toLowerCase();
   const rows = Array.from(document.querySelectorAll('.archive-row'));
-  const searchInput = document.querySelector('.archive-search input[name="search"]');
-
-  if (searchInput && searchQuery) {
-    searchInput.value = params.get('search');
-  }
 
   function matches(row) {
     const pillar = row.dataset.pillar;

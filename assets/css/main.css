@@ -4,7 +4,6 @@
   --accent: #7e1000;
   --text: #111;
   --muted: #777;
-  --soft: rgba(0, 0, 0, 0.05);
 }
 
 * {
@@ -62,6 +61,7 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   font: 12px/1 'Gill Sans', Optima, sans-serif;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 #navigation_box a {
@@ -75,7 +75,7 @@ a:hover {
 }
 
 #navigation_box input[type="search"] {
-  border: 1px solid var(--soft);
+  border: 1px solid rgba(0,0,0,0.15);
   padding: 0.35rem 0.5rem;
   font: inherit;
   min-width: 12rem;
@@ -83,7 +83,7 @@ a:hover {
 
 #navigation_box button[type="submit"] {
   background: transparent;
-  border: 1px solid var(--soft);
+  border: 1px solid rgba(0,0,0,0.25);
   color: var(--text);
   padding: 0.35rem 0.75rem;
   letter-spacing: 0.1em;
@@ -99,6 +99,7 @@ a:hover {
 .entry {
   margin: 0 0 2.5rem 0;
   padding: 0 0 1.75rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
 .entry:last-child {
@@ -123,7 +124,7 @@ a:hover {
 }
 
 .entry h2 {
-  border-bottom: 3px solid var(--accent);
+  border-bottom: 4px solid var(--accent);
   color: var(--muted);
   font-weight: 400;
   padding-bottom: 0.25rem;
@@ -131,7 +132,7 @@ a:hover {
 }
 
 blockquote {
-  border-left: 3px solid var(--soft);
+  border-left: 2px solid rgba(0,0,0,0.08);
   margin: 1.5rem 0;
   padding: 0.5rem 1rem;
   font-style: italic;
@@ -144,7 +145,7 @@ ul {
 
 hr {
   border: 0;
-  border-bottom: 1px solid var(--soft);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
   margin: 2rem 0;
 }
 
@@ -157,23 +158,21 @@ hr {
 }
 
 .pillar-card {
+  border: 1px solid rgba(0,0,0,0.1);
   padding: 1.25rem;
   text-align: center;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  background: linear-gradient(180deg, rgba(126, 16, 0, 0.04), rgba(126, 16, 0, 0.02));
-  border-radius: 6px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .pillar-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+  border-color: var(--accent);
 }
 
 .pillar-card .placeholder {
-  background: rgba(126, 16, 0, 0.1);
+  background: rgba(126, 16, 0, 0.08);
   height: 120px;
   margin-bottom: 1rem;
-  border-radius: 4px;
 }
 
 .topic-cloud {
@@ -207,8 +206,8 @@ hr {
 
 /* Archive */
 .archive-row {
-  padding: 1.25rem 0;
-  border-bottom: 1px solid var(--soft);
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
 .archive-row:last-child {
@@ -261,12 +260,12 @@ hr {
 .archive-search input[type="search"] {
   flex: 1;
   padding: 0.5rem 0.65rem;
-  border: 1px solid var(--soft);
+  border: 1px solid rgba(0,0,0,0.15);
 }
 
 .archive-search button {
   padding: 0.5rem 0.9rem;
-  border: 1px solid var(--soft);
+  border: 1px solid rgba(0,0,0,0.25);
   background: transparent;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -307,7 +306,7 @@ footer {
   padding: 2rem 0;
   color: var(--muted);
   font-size: 0.95rem;
-  border-top: 1px solid var(--soft);
+  border-top: 1px solid rgba(0,0,0,0.05);
 }
 
 @media screen and (min-width: 900px) {
