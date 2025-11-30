@@ -1,0 +1,33 @@
+# Site settings
+name: "Pillars of Thought"
+title: "Pillars of Thought"
+description: "Explaining big ideas in plain language, one pillar at a time."
+url: "https://your-username.github.io"
+baseurl: "/blog"
+
+permalink: /:categories/:year/:month/:day/:title/
+
+collections:
+  posts:
+    output: true
+
+markdown: kramdown
+theme: null
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
+      pillar: philosophy
+      topics: []
+
+plugins: []
+
+# Build settings
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor

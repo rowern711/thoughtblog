@@ -1,0 +1,29 @@
+---
+layout: default
+---
+<section class="home">
+  <div class="pillars-grid">
+    {% assign pillars = "philosophy,theology,history,policy" | split: ',' %}
+    {% for pillar in pillars %}
+    <a class="pillar-card" href="{{ '/archive.html?pillar=' | append: pillar | relative_url }}">
+      <div class="placeholder"></div>
+      <h2>{{ pillar | capitalize }}</h2>
+      <p class="meta-tags">{{ pillar | upcase }} essays</p>
+    </a>
+    {% endfor %}
+  </div>
+
+  <h2>Browse all topics</h2>
+  {% assign all_topics = site.posts | map: 'topics' | join: ',' | split: ',' | uniq | sort %}
+  <ul class="topic-cloud">
+    {% for topic in all_topics %}
+      {% unless topic == '' %}
+      <li><a href="{{ '/archive.html?topic=' | append: topic | relative_url }}">{{ topic }}</a></li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+
+  <div class="center">
+    <a class="browse-archive" href="{{ '/archive.html' | relative_url }}">Browse the entire archive</a>
+  </div>
+</section>

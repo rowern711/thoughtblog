@@ -1,0 +1,32 @@
+---
+layout: default
+---
+<article class="entry">
+  <h1>{{ page.title }}</h1>
+  <div class="meta">
+    {{ page.date | date: '%B %d, %Y' }} · {{ page.pillar | upcase }}{% if page.topics %} · {{ page.topics | join: ', ' }}{% endif %}
+  </div>
+  <div class="content">
+    {{ content }}
+  </div>
+
+  <section class="related">
+    <h3>Related posts</h3>
+    {% assign related_posts = site.posts | where: 'pillar', page.pillar %}
+    {% if page.topics %}
+      {% for topic in page.topics %}
+        {% assign topic_matches = site.posts | where_exp: 'post', "post.topics contains topic" %}
+        {% assign related_posts = related_posts | concat: topic_matches %}
+      {% endfor %}
+    {% endif %}
+    {% assign related_posts = related_posts | uniq | where_exp: 'post', "post.url != page.url" | slice: 0,5 %}
+    <ul>
+      {% for post in related_posts %}
+      <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> <span class="meta-tags">{{ post.pillar | upcase }}</span></li>
+      {% endfor %}
+      {% if related_posts == empty %}
+      <li><span class="meta">More essays coming soon.</span></li>
+      {% endif %}
+    </ul>
+  </section>
+</article>

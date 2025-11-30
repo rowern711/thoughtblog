@@ -1,0 +1,14 @@
+<div id="navigation_box">
+  <a href="{{ '/' | relative_url }}">Home</a>
+  <a href="{{ '/archive.html' | relative_url }}">Archive</a>
+  <a href="{{ '/about.html' | relative_url }}">About</a>
+  <a href="{{ '/contact.html' | relative_url }}">Contact</a>
+  <form class="search" role="search" action="{{ '/archive.html' | relative_url }}" method="get">
+    <input type="search" name="search" placeholder="Search posts" aria-label="Search posts">
+    <button type="submit">Search</button>
+  </form>
+</div>
+<header id="header">
+  <h1>{{ site.title }}</h1>
+  <p class="description">{{ site.description }}</p>
+</header>

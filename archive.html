@@ -1,0 +1,79 @@
+---
+layout: default
+title: Archive
+---
+<section class="archive">
+  <h2>Archive</h2>
+  <form class="archive-search" action="{{ '/archive.html' | relative_url }}" method="get">
+    <input type="search" name="search" placeholder="Search by title or excerpt" value="{{ page.search | default: site.params.search }}">
+    <button type="submit">Search</button>
+  </form>
+
+  <div class="archive-filters">
+    <label>Pillars:</label>
+    {% assign pillars = "philosophy,theology,history,policy" | split: ',' %}
+    {% for pillar in pillars %}
+      <a href="{{ '/archive.html?pillar=' | append: pillar | relative_url }}" data-filter-pillar>{{ pillar | capitalize }}</a>
+    {% endfor %}
+  </div>
+
+  {% assign topics = site.posts | map: 'topics' | join: ',' | split: ',' | uniq | sort %}
+  <div class="archive-filters">
+    <label>Topics:</label>
+    {% for topic in topics %}
+      {% unless topic == '' %}
+      <a href="{{ '/archive.html?topic=' | append: topic | relative_url }}" data-filter-topic>{{ topic }}</a>
+      {% endunless %}
+    {% endfor %}
+  </div>
+
+  <div id="archive-list">
+    {% for post in site.posts %}
+    <div class="archive-row" data-pillar="{{ post.pillar }}" data-topics="{{ post.topics | join:' ' }}">
+      <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+      <div class="meta">{{ post.date | date: '%B %d, %Y' }} · {{ post.pillar | upcase }}{% if post.topics %} · {{ post.topics | join: ', ' }}{% endif %}</div>
+      <p>{{ post.excerpt | strip_html | truncate: 220 }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const targetPillar = params.get('pillar');
+  const targetTopic = params.get('topic') || params.get('tag');
+  const searchQuery = (params.get('search') || '').toLowerCase();
+  const rows = Array.from(document.querySelectorAll('.archive-row'));
+
+  function matches(row) {
+    const pillar = row.dataset.pillar;
+    const topics = row.dataset.topics.toLowerCase();
+    const text = row.textContent.toLowerCase();
+    if (targetPillar && pillar !== targetPillar) return false;
+    if (targetTopic && !topics.includes(targetTopic.toLowerCase())) return false;
+    if (searchQuery && !text.includes(searchQuery)) return false;
+    return true;
+  }
+
+  rows.forEach(row => {
+    row.style.display = matches(row) ? '' : 'none';
+  });
+
+  // highlight active filters
+  if (targetPillar) {
+    document.querySelectorAll('[data-filter-pillar]').forEach(link => {
+      if (link.href.toLowerCase().includes(`pillar=${targetPillar.toLowerCase()}`)) {
+        link.classList.add('active');
+      }
+    });
+  }
+  if (targetTopic) {
+    document.querySelectorAll('[data-filter-topic]').forEach(link => {
+      if (link.href.toLowerCase().includes(`topic=${targetTopic.toLowerCase()}`)) {
+        link.classList.add('active');
+      }
+    });
+  }
+})();
+</script>
