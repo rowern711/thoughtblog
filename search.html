@@ -1,0 +1,96 @@
+---
+layout: default
+title: Search
+---
+<section class="search-page">
+  <h1>Search</h1>
+  <form class="site-search" action="{{ site.baseurl }}/search.html" method="get">
+    <input id="search-input" type="search" name="q" placeholder="Search posts by title, pillar, or topic" aria-label="Search posts">
+    <button type="submit">Search</button>
+  </form>
+  <p class="search-summary" id="search-summary"></p>
+  <div id="search-results" aria-live="polite"></div>
+</section>
+
+<script>
+  const postsIndex = [
+    {% for post in site.posts %}{
+      title: {{ post.title | jsonify }},
+      url: {{ post.url | relative_url | jsonify }},
+      date: "{{ post.date | date: "%B %-d, %Y" }}",
+      pillar: {{ post.pillar | default: "" | downcase | jsonify }},
+      topics: [{% for topic in post.topics %}{{ topic | downcase | jsonify }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+      excerpt: {{ post.excerpt | strip_html | strip_newlines | strip | jsonify }}
+    }{% unless forloop.last %},
+    {% endunless %}{% endfor %}
+  ];
+
+  const params = new URLSearchParams(window.location.search);
+  const queryInput = document.getElementById('search-input');
+  const summary = document.getElementById('search-summary');
+  const resultsContainer = document.getElementById('search-results');
+  const query = (params.get('q') || '').trim();
+  queryInput.value = query;
+
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+
+  function matches(post, searchTerms) {
+    if (!searchTerms.length) return true;
+    const haystack = [
+      post.title || '',
+      post.excerpt || '',
+      post.pillar || '',
+      (post.topics || []).join(' ')
+    ].join(' ').toLowerCase();
+
+    return searchTerms.every((term) => haystack.includes(term));
+  }
+
+  function renderResults(list) {
+    resultsContainer.innerHTML = '';
+    if (!list.length) {
+      summary.textContent = terms.length
+        ? `No posts match “${query}.”`
+        : 'No posts found.';
+      return;
+    }
+
+    summary.textContent = terms.length
+      ? `Showing ${list.length} result${list.length === 1 ? '' : 's'} for “${query}.”`
+      : `Showing all ${list.length} posts. Add a search above to narrow the list.`;
+
+    const fragment = document.createDocumentFragment();
+
+    list.forEach((post) => {
+      const article = document.createElement('article');
+      article.className = 'archive-row';
+      article.dataset.pillar = post.pillar || '';
+      article.dataset.topics = (post.topics || []).join(',');
+
+      const title = document.createElement('h2');
+      const link = document.createElement('a');
+      link.href = post.url;
+      link.textContent = post.title;
+      title.appendChild(link);
+
+      const meta = document.createElement('p');
+      meta.className = 'archive-meta';
+      const topics = (post.topics || []).join(', ');
+      const pillar = post.pillar ? post.pillar.toUpperCase() : '';
+      meta.textContent = [post.date, pillar, topics].filter(Boolean).join(' · ');
+
+      const excerpt = document.createElement('p');
+      excerpt.textContent = post.excerpt;
+
+      article.appendChild(title);
+      article.appendChild(meta);
+      article.appendChild(excerpt);
+      fragment.appendChild(article);
+    });
+
+    resultsContainer.appendChild(fragment);
+  }
+
+  const filtered = postsIndex.filter((post) => matches(post, terms));
+  renderResults(filtered);
+</script>
