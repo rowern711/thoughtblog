@@ -21,7 +21,7 @@ layout: default
   <div class="topic-grid">
     {% for topic in topics %}
     {% if topic != '' %}
-    <a class="topic-chip" href="{{ site.baseurl }}/archive.html?topic={{ topic | downcase | uri_escape }}">{{ topic }}</a>
+    <a class="topic-chip" href="{{ site.baseurl }}/topic/{{ topic | downcase | uri_escape }}/">{{ topic }}</a>
     {% endif %}
     {% endfor %}
   </div>
