@@ -1,0 +1,39 @@
+---
+layout: default
+---
+<article class="entry">
+  <header class="post-header">
+    <h1>{{ page.title }}</h1>
+    <p class="post-meta">{{ page.date | date: "%B %-d, %Y" }} · {{ page.pillar | upcase }}{% if page.topics and page.topics.size > 0 %} · {{ page.topics | join: ", " }}{% endif %}</p>
+  </header>
+  <div class="entrywrap">
+    {{ content }}
+  </div>
+</article>
+
+<section class="related">
+  <h2>Related posts</h2>
+    <ul>
+      {% assign pillar_count = 0 %}
+      {% for post in site.posts %}
+        {% if post.url != page.url and post.pillar == page.pillar %}
+          <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> — {{ post.pillar | capitalize }}</li>
+          {% assign pillar_count = pillar_count | plus: 1 %}
+          {% if pillar_count == 5 %}{% break %}{% endif %}
+        {% endif %}
+      {% endfor %}
+      {% if pillar_count == 0 %}
+        {% assign primary_topic = page.topics | first %}
+        {% if primary_topic %}
+          {% assign topic_count = 0 %}
+          {% for post in site.posts %}
+            {% if post.url != page.url and post.topics contains primary_topic %}
+              <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> — {{ post.pillar | capitalize }}</li>
+              {% assign topic_count = topic_count | plus: 1 %}
+              {% if topic_count == 5 %}{% break %}{% endif %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endif %}
+    </ul>
+  </section>
